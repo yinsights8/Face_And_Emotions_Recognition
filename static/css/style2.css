@@ -1,0 +1,94 @@
+*{
+    padding: 0;
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    box-sizing: border-box;
+    color: white;
+}
+
+
+body{
+    background: url("/static/images/FaceAI.gif");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    overflow: hidden;
+}
+
+#title{
+    text-align: start;
+    margin-top: 0px;
+}
+
+.main-container{
+    height: 720px;
+    width: 1280px;
+    max-width: 1280px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-38%, -52%);
+    background-color: #fff;
+    background: rgba(255,255,255,0.2);
+    border: 5px solid rgba(255,255,255,0.2);
+    border-radius: 15px;
+    padding: 50px 20px 70px;
+}
+
+#video-container{
+    position: absolute;
+    top: 0%;
+    left: 0%;
+    border-radius: 15px;
+    mix-blend-mode: multiply;
+}
+
+.contaier-buttons{
+    /* background: transparent; */
+    background-color: rgba(255,255,255,0.2);
+    position: absolute;
+    left: 0;
+    height: 100vh;
+    width: 300px;
+}
+
+
+.container-buttons .Upload-file-button{
+    position: absolute;
+    margin-top: 150px;
+}
+
+
+.container-buttons .Upload-file-button #upload-file{
+    position: absolute;
+    left: 0;
+    top: 50px;
+}
+
+
+.WebCam-button{
+    margin-top: 50px;
+}
+
+#loading-bar {
+    display: none;
+    width: 100%;
+    height: 20px;
+    background-color: #f3f3f3;
+    position: relative;
+    margin-top: 10px;
+}
+
+#loading-bar .bar {
+    width: 0;
+    height: 100%;
+    background-color: #4caf50;
+}
+
+#loading-bar .time {
+    position: absolute;
+    right: 10px;
+    top: 0;
+    color: #000;
+}
