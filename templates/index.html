@@ -1,0 +1,278 @@
+<!-- file 3 -->
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+        <link rel="stylesheet" href="/static/css/style.css">
+        <title>C-Vision | Login & Registration</title>
+    </head>
+    <body>
+    <div class="wrapper">
+        <nav class="nav">
+            <div class="nav-logo">
+                <p>C-Vision</p>
+            </div>
+            <div class="nav-menu" id="navMenu">
+                <ul>
+                    <li><a href="#" class="link active">Home</a></li>
+                    <li><a href="#" class="link">Blog</a></li>
+                    <li><a href="#" class="link">Services</a></li>
+                    <li><a href="#" class="link">About</a></li>
+                </ul>
+            </div>
+            <div class="nav-button">
+                <button class="btn white-btn" id="loginBtn" onclick="showLogin()">Sign In</button>
+                <button class="btn" id="registerBtn" onclick="showRegister()">Sign Up</button>
+            </div>
+            <div class="nav-menu-btn">
+                <i class="bx bx-menu" onclick="myMenuFunction()"></i>
+            </div>
+        </nav>
+    
+        <div class="form-box">
+            <!-- Login Form -->
+            <div class="login-container" id="login">
+                <div class="top">
+                    <span>Don't have an account? <a href="#" onclick="showRegister()">Sign Up</a></span>
+                    <header>Login</header>
+                </div>
+                <div class="input-box">
+                    <input type="text" id="login-email" class="input-field" placeholder="Username or Email">
+                    <i class="bx bx-user"></i>
+                </div>
+                <div class="input-box">
+                    <input type="password" id="login-password" class="input-field" placeholder="Password">
+                    <i class="bx bx-lock-alt"></i>
+                </div>
+                <div class="input-box">
+                    <input type="submit" class="submit" id="login-submit" value="Sign In" onclick="loginUser()">
+                </div>
+                <div id="login-message" style="color: red; display: block;"></div>
+                <div class="two-col">
+                    <div class="one">
+                        <input type="checkbox" id="login-check">
+                        <label for="login-check"> Remember Me</label>
+                    </div>
+                    <div class="two">
+                        <label><a href="#">Forgot password?</a></label>
+                    </div>
+                </div>
+            </div>
+    
+            <!-- Registration Form -->
+            <div class="register-container" id="register">
+                <div class="top">
+                    <span>Have an account? <a href="#" onclick="showLogin()">Login</a></span>
+                    <header>Sign Up</header>
+                </div>
+                <div class="two-forms">
+                    <div class="input-box">
+                        <input type="text" id="register-firstname" class="input-field" placeholder="Firstname">
+                        <i class="bx bx-user"></i>
+                    </div>
+                    <div class="input-box">
+                        <input type="text" id="register-lastname" class="input-field" placeholder="Lastname">
+                        <i class="bx bx-user"></i>
+                    </div>
+                </div>
+                <div class="input-box">
+                    <input type="text" id="register-email" class="input-field" placeholder="Email">
+                    <i class="bx bx-envelope"></i>
+                </div>
+                <div class="input-box">
+                    <input type="password" id="register-password" class="input-field" placeholder="Password">
+                    <i class="bx bx-lock-alt"></i>
+                </div>
+                <div class="input-box">
+                    <input type="submit" class="submit" value="Register" onclick="checkEmailAndStartCapture()">
+                </div>
+                <!-- Error and Success Messages -->
+                <div id="error-message" style="color: red;"></div>
+                <div id="register-message" style="color: green;"></div>
+    
+                <div class="two-col">
+                    <div class="one">
+                        <input type="checkbox" id="register-check">
+                        <label for="register-check"> Remember Me</label>
+                    </div>
+                    <div class="two">
+                        <label><a href="#">Terms & conditions</a></label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+        <!-- Webcam Capture Section -->
+        <div class="capture-container" id="capture-container" style="display:none;">
+            <header>Capturing Images...</header>
+            <video id="video" width="640" height="480" autoplay></video>
+        </div>
+    </div>   
+    
+    <script>
+        function myMenuFunction() {
+            var i = document.getElementById("navMenu");
+            if (i.className === "nav-menu") {
+                i.className += " responsive";
+            } else {
+                i.className = "nav-menu";
+            }
+        }
+     
+        function showLogin() {
+            document.getElementById('login').style.left = "4px";
+            document.getElementById('register').style.right = "-520px";
+            document.getElementById('loginBtn').className += " white-btn";
+            document.getElementById('registerBtn').className = "btn";
+            document.getElementById('login').style.opacity = 1;
+            document.getElementById('register').style.opacity = 0;
+        }
+    
+        function showRegister() {
+            document.getElementById('login').style.left = "-510px";
+            document.getElementById('register').style.right = "5px";
+            document.getElementById('loginBtn').className = "btn";
+            document.getElementById('registerBtn').className += " white-btn";
+            document.getElementById('login').style.opacity = 0;
+            document.getElementById('register').style.opacity = 1;
+        }
+    
+        async function checkEmailAndStartCapture() {
+            const email = document.getElementById('register-email').value;
+    
+            const response = await fetch('/check_email', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email: email })
+            });
+    
+            const data = await response.json();
+            if (data.status === 'error') {
+                document.getElementById('error-message').innerText = data.message;
+            } else {
+                document.getElementById('error-message').innerText = ''; // Clear any previous error messages
+                startCapture();
+            }
+        }
+    
+        async function startCapture() {
+            const captureContainer = document.getElementById('capture-container');
+            const video = document.getElementById('video');
+            captureContainer.style.display = 'block';
+            
+            const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+            video.srcObject = stream;
+            
+            let capturedImages = [];
+            let captureCount = 0;
+    
+            const intervalId = setInterval(async () => {
+                if (captureCount < 10) {
+                    const canvas = document.createElement('canvas');
+                    canvas.width = video.videoWidth;
+                    canvas.height = video.videoHeight;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+                    const imageBlob = await new Promise(resolve => canvas.toBlob(resolve, 'image/jpeg'));
+                    capturedImages.push(imageBlob);
+                    captureCount++;
+                } else {
+                    clearInterval(intervalId);
+                    stream.getTracks().forEach(track => track.stop());
+                    captureContainer.style.display = 'none';
+                    submitImages(capturedImages);
+                }
+            }, 2000);
+        }
+        
+
+        async function submitImages(images) {
+            const formData = new FormData();
+            formData.append('firstname', document.getElementById('register-firstname').value);
+            formData.append('lastname', document.getElementById('register-lastname').value);
+            formData.append('email', document.getElementById('register-email').value);
+            formData.append('password', document.getElementById('register-password').value);
+            images.forEach((image, index) => {
+                formData.append(`image${index}`, image);
+            });
+
+            try {
+                const response = await fetch('/register', {
+                    method: 'POST',
+                    body: formData,
+                });
+
+                const data = await response.json();
+                if (data.status === 'error') {
+                    document.getElementById('error-message').innerText = data.message;
+                } else {
+                    document.getElementById('register-message').innerText = data.message;
+                    setTimeout(() => {
+                        window.location.href = '/face_recognition_results'; // Redirect to login page
+                    }, 3000); // 3 seconds delay for user to see the success message
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('register-message').innerText = 'An error occurred. Please try again later.';
+            }
+        }
+    
+        // async function submitImages(images) {
+        //     const formData = new FormData();
+        //     formData.append('firstname', document.getElementById('register-firstname').value);
+        //     formData.append('lastname', document.getElementById('register-lastname').value);
+        //     formData.append('email', document.getElementById('register-email').value);
+        //     formData.append('password', document.getElementById('register-password').value);
+        //     images.forEach((image, index) => {
+        //         formData.append(`image${index}`, image);
+        //     });
+    
+        //     try {
+        //         const response = await fetch('/register', {
+        //             method: 'POST',
+        //             body: formData,
+        //         });
+    
+        //         const data = await response.json();
+        //         if (data.status === 'error') {
+        //             document.getElementById('error-message').innerText = data.message;
+        //         } else {
+        //             document.getElementById('register-message').innerText = data.message;
+        //             setTimeout(() => {
+        //                 window.location.href = '/login';
+        //             }, 3000); // Redirect to login page after 3 seconds
+        //         }
+        //     } catch (error) {
+        //         console.error('Error:', error);
+        //         document.getElementById('register-message').innerText = 'An error occurred. Please try again later.';
+        //     }
+        // }
+    
+        function loginUser() {
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+    
+            fetch('/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email: email, password: password })
+            }).then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    document.getElementById('login-message').innerText = 'Login successful!';
+                    window.location.href = '/face_recognition_results';
+                } else {
+                    document.getElementById('login-message').innerText = 'Login failed: ' + data.message;
+                }
+            }).catch((error) => {
+                console.error('Error:', error);
+                document.getElementById('login-message').innerText = 'An error occurred. Please try again later.';
+            });
+        }
+    
+    </script>
+    </body>
+    </html>
