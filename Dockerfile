@@ -2,11 +2,11 @@ FROM pytorch/pytorch:2.3.1-cuda11.8-cudnn8-runtime
 
 # Set environment variables
 ENV DEBIAN_FRONTEND=noninteractive
-ENV TZ=Etc/UTC
 
 # Set the working directory in the container
 WORKDIR /app
 
+# Install Python 3.9 and necessary dependencies
 RUN apt-get update && \
     apt-get install -y \
         python3.9 \

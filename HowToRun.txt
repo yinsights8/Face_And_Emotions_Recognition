@@ -1,6 +1,3 @@
-install python 3.9 
-
-
 for windows 
     1. create new environment
 
@@ -38,8 +35,6 @@ for MacOS/Linix
         
         2. for website
             > python ClientApp.py
-
-        3. hypercorn --bind 0.0.0.0:8000 ClientApp:Faceapp
 
 
 TO install pip in Linix

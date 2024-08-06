@@ -1,1 +1,1 @@
-web: hypercorn ClientApp:Faceapp
+web: hypercorn app:app
