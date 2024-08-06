@@ -1,0 +1,79 @@
+Step 1: write a docker file 
+Step 2: building the Docker image
+Step 3: Running our project app
+
+Step 2: Building docker image
+	a. >> docker build -t your_image_name .
+
+Step 3: Running the dockers
+	a. >> docker run -p 8000:8000 given_API_NAME 
+	or
+	b. >> docker run --gpus all -it --rm -p 8000:8000 your_image_name
+
+TO DO RUN : 
+	Docker with X Server for GUI Apps:
+
+	If your application needs GUI access to the webcam, you might need to forward the X server. This is more advanced and might look like this:
+	sh
+
+		>> xhost +local:docker
+		>> docker run --gpus all -it --rm --device=/dev/video0 -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix appupdate_ai
+		>> xhost -local:docker
+
+
+
+# # Use an official NVIDIA CUDA base image with Ubuntu 20.04
+# FROM nvidia/cuda:11.8.0-cudnn8-devel-ubuntu20.04
+
+# # Set environment variables
+# ENV DEBIAN_FRONTEND=noninteractive
+
+# # Install system dependencies and Python 3.9
+# RUN apt-get update && \
+#     apt-get install -y \
+#         software-properties-common \
+#         python3.9 \
+#         python3.9-dev \
+#         python3.9-distutils \
+#         python3-pip \
+#         build-essential \
+#         libffi-dev \
+#         libpq-dev \
+#         libglib2.0-0 \
+#         && rm -rf /var/lib/apt/lists/*
+
+# # Update alternatives to set python3.9 as default
+# RUN update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.9 1
+
+# RUN apt-get update && \
+#     apt-get install -y \
+#     libgl1-mesa-glx \
+#     libgl1-mesa-dri
+
+# # Upgrade pip
+# RUN pip3 install --upgrade pip
+
+# # Install PyTorch and related libraries
+# RUN pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118 || \
+#     (echo "Failed to install PyTorch, check compatibility" && exit 1)
+
+# # Copy the current directory contents into the container at /app
+# COPY . /app
+
+# # Set the working directory in the container
+# WORKDIR /app
+
+# # Install other Python dependencies
+# RUN pip3 install -r requirements.txt
+
+# # Expose port 8000 for the webserver
+# EXPOSE 8000
+
+# # Command to run the application
+# # CMD ["gunicorn", "--workers", "4", "--bind", "0.0.0.0:8000", "ClientApp:app.app"]
+# # CMD ["waitress-serve", "--host=0.0.0.0", "--port=8000", "ClientApp:app.app"]
+# CMD ["python3", "ClientApp.py"]
+
+# --------------------------------------------------------------------------------------------------------------------------------
+
+c drive space 508/ 930GB

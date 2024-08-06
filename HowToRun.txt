@@ -1,0 +1,57 @@
+install python 3.9 
+
+
+for windows 
+    1. create new environment
+
+        > python3.9 -m venv myenv
+
+    2. activate env 
+        > .\env_name\Scripts\activate
+
+    3. run the file 
+    
+        1. for local 
+            > python main.py
+        
+        2. for website
+            > python ClientApp.py
+
+
+
+for MacOS/Linix
+    1. go to project path
+
+    2. install python 3.9
+        > brew install python@3.9
+
+    3. create new environment
+        > python -m venv myenv
+
+    4. activate myenv 
+        > source env/bin/activate
+
+    5. run the file 
+
+        1. for local 
+            > python main.py
+        
+        2. for website
+            > python ClientApp.py
+
+        3. hypercorn --bind 0.0.0.0:8000 ClientApp:Faceapp
+
+
+TO install pip in Linix
+    > sudo apt install python3-pip
+    OR
+    > sudo apt install python3.9-venv python3.9-dev
+    OR
+    > curl -sS https://bootstrap.pypa.io/get-pip.py | sudo python3.9
+
+
+
+
+the server will run
+    go to this link after running "python ClientApp.py"
+        > http://127.0.0.1:8000
